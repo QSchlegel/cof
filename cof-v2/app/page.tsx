@@ -41,6 +41,7 @@ import ConnectWallet from "@/components/connect-wallet";
 import Link from "next/link";
 import { Header } from "@/components/header";
 import { useFundingStore } from "@/store/use-funding-store";
+import { ParticlesBackground } from "@/components/particles-background";
 
 export default function HomePage() {
   const { connected } = useWallet();
@@ -112,9 +113,10 @@ export default function HomePage() {
     <div className="min-h-screen bg-slate-50">
       <Header />
       
-      {/* Hero Section with Cardano blue gradient */}
-      <section className="relative py-24 bg-gradient-to-br from-cardano-600 via-cardano-500 to-cardano-700 text-white shadow-lg">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+      {/* Hero Section with Cardano blue gradient and dynamic particles background */}
+      <section className="relative min-h-[500px] py-24 bg-gradient-to-br from-cardano-600 via-cardano-500 to-cardano-700 text-white shadow-lg overflow-hidden">
+        <ParticlesBackground />
+        <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
           <div className="animate-fade-in">
             <h1 className="text-5xl font-extrabold mb-4 drop-shadow-lg">
               Fund Open Source,<br />

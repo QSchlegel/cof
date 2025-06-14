@@ -20,19 +20,20 @@ export function FundingListCard({ fundingList }: FundingListCardProps) {
           </p>
         </div>
 
-        <div className="space-y-2 mb-4">
-          <div className="flex items-center justify-between text-sm">
-            <span className="text-slate-600">Total Funded</span>
-            <span className="font-medium text-slate-900">{fundingList.totalFunded} ₳</span>
-          </div>
-          <div className="flex items-center justify-between text-sm">
-            <span className="text-slate-600">Monthly Budget</span>
-            <span className="font-medium text-slate-900">{fundingList.monthlyBudget} ₳</span>
-          </div>
-          <div className="flex items-center justify-between text-sm">
-            <span className="text-slate-600">Projects</span>
-            <span className="font-medium text-slate-900">{fundingList.projects.length}</span>
-          </div>
+        <div className="mb-4">
+          <p className="text-sm text-slate-600 font-medium mb-2">Projects</p>
+          <ul className="space-y-1">
+            {fundingList.projects.length === 0 ? (
+              <li className="text-sm text-slate-500 italic">No projects added yet</li>
+            ) : (
+              fundingList.projects.map((fp) => (
+                <li key={fp.id} className="text-sm text-slate-900 flex justify-between">
+                  <span className="truncate">{fp.project.name}</span>
+                  <span className="text-slate-500">{fp.distributionPercentage}%</span>
+                </li>
+              ))
+            )}
+          </ul>
         </div>
 
         <div className="flex gap-2">

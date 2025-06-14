@@ -9,15 +9,6 @@ export default function ConnectWallet() {
         onConnected={() => {
           console.log('Wallet connected');
         }}
-        cardanoPeerConnect={{
-          dAppInfo: {
-            name: "COF",
-            url: "https://cof.com",
-          },
-          announce: [
-            "wss://dev.btt.cf-identity-wallet.metadata.dev.cf-deployments.org",
-          ],
-        }}
       />
     </div>
   );
