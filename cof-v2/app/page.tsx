@@ -300,7 +300,7 @@ export default function HomePage() {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center mb-12">
             <h3 className="text-3xl font-bold text-slate-900 mb-4">Transparency Dashboard</h3>
-            <p className="text-lg text-slate-600">All funding flows are public and auditable</p>
+            <p className="text-lg text-slate-600">All funding flows are public and auditable</p>[]
           </div>
 
           <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">

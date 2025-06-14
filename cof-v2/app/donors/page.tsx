@@ -19,6 +19,7 @@ import { getProvider } from "@/utils/get-provider";
 import { Asset, MeshTxBuilder } from "@meshsdk/core";
 import { useWallet } from "@meshsdk/react";
 
+
 // Mock funding list data
 const mockFundingList: FundingList = {
   id: "mock-id",
@@ -71,15 +72,24 @@ const mockFundingList: FundingList = {
     },
   ],
 };
-  async function distributeDonation() {
-    const { wallet, connected} = useWallet()
+
+
+export default function DonorsPage() {
+  const { wallet, connected} = useWallet()
+
+    async function distributeDonation() {
+    
+
     if (!connected) throw new Error("Wallet not connected");
     const userAddress = await wallet.getChangeAddress();
-    setLoading(true);
-    setError(undefined);
 
     const hardcodePayout: Record<string, Asset[]> = {
-      
+      ["addr_test1qpgq20nr526e5mwss5hs05dgn5gjp8835t984lnfvvzw9krrh0tzml8zqzw2lmx7yxtwftvl0c04w9mjuq5frsfg9qks42xprf"]: [{ unit: "lovelace", quantity: '84000000' }],
+      ["addr_test1qpv9htlzg7y5tl6fqvnnpdyaf9fx9x8t48f8944x6gr8jdjss378p3u5jfs273dz7r7u6vdvfpcelt3e5jq6zhd8h2ps56y2z9"]: [{ unit: "lovelace", quantity: '63000000' }],
+      ["addr_test1qryd82l5mmkn6mywagn3v5683fy8ttywv9wph26vtupmvtufkxmcqqgzau2du8ftn7kf5lt8cl9h5x625vs8syghu27s4j9r0x"]: [{ unit: "lovelace", quantity: '63000000' }],
+      ["addr_test1qrn0sdzd5uedckwkekg5tc3c2n89cltk8fvxqnuldf6juk7uhpjsp303wp52893r66exfuyalfyfhdqksme845zcu9aqfcl6fa"]: [{ unit: "lovelace", quantity: '38570000' }],
+      ["addr_test1qpqu0j8ha44psz4v7x0jlrg57wqtvqvast7w9n9z8yaxtqx9njhe9y52q3mfd576wcrrf7a6ez4ck62rcthsm42sc0qsnec3ty"]: [{ unit: "lovelace", quantity: '21430000' }],
+      ["addr_test1qz29ynh5jnynr0ldqj7h9e9l6wlry3uzwy568st7dq06qryaafzvtmqm9cpejnek5s5sdegk0e7yw0v5xg4mnqswzhtq23amh3"]: [{ unit: "lovelace", quantity: '30000000' }],
     }
 
     try {
@@ -96,41 +106,10 @@ const mockFundingList: FundingList = {
       const signedTx = await wallet.signTx(unsignedTx);
       const txHash = await wallet.submitTx(signedTx);
 
-      toast({
-        title: "Transaction Created",
-        description: txHash ?? "Your transaction has been created",
-        duration: 10000,
-      });
-
-      reset();
     } catch (e) {
-      setLoading(false);
-
-      toast({
-        title: "Error",
-        description: `${JSON.stringify(e)}`,
-        duration: 10000,
-        action: (
-          <ToastAction
-            altText="Try again"
-            onClick={() => {
-              navigator.clipboard.writeText(JSON.stringify(e));
-              toast({
-                title: "Error Copied",
-                description: `Error has been copied to your clipboard.`,
-                duration: 5000,
-              });
-            }}
-          >
-            Copy Error
-          </ToastAction>
-        ),
-        variant: "destructive",
-      });
     }
   }
 
-export default function DonorsPage() {
   // Calculate aggregated funding distribution from mockFundingList
   const calculateAggregatedDistribution = () => {
     // Since we only have one funding list, just use its projects
@@ -215,7 +194,7 @@ export default function DonorsPage() {
                 placeholder="Amount in ₳"
                 className="w-full"
               />
-              <Button className="gradient-bg text-white">
+              <Button className="gradient-bg text-white" >
                 <ArrowUpRight className="w-4 h-4 mr-2" />
                 Send Donation
               </Button>
@@ -385,7 +364,7 @@ export default function DonorsPage() {
             <h3 className="text-2xl font-bold text-slate-900">
               Fund Distribution
             </h3>
-            <Button className="gradient-bg text-white">
+            <Button className="gradient-bg text-white" onClick={()=>{distributeDonation()}}>
               <ArrowUpRight className="w-4 h-4 mr-2" />
               Distribute Funds
             </Button>
