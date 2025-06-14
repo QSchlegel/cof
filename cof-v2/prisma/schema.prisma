@@ -1,0 +1,80 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
+// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
+
+generator client {
+  provider = "prisma-client-js"
+  output   = "../lib/generated/prisma"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id            String         @id @default(cuid())
+  address       String         @unique
+  name          String?
+  avatar        String?
+  fundingLists  FundingList[]
+  createdAt     DateTime       @default(now())
+  updatedAt     DateTime       @updatedAt
+}
+
+model FundingList {
+  id            String                @id @default(cuid())
+  name          String
+  description   String?
+  monthlyBudget Float
+  userId        String
+  user          User                 @relation(fields: [userId], references: [id])
+  projects      FundingListProject[]
+  transactions  Transaction[]
+  createdAt     DateTime             @default(now())
+  updatedAt     DateTime             @updatedAt
+}
+
+model Project {
+  id                String                @id @default(cuid())
+  name              String
+  description       String?
+  repository        String
+  platform          String
+  stars             Int
+  forks             Int
+  dependencies      String[]
+  fundingAddress    String
+  totalFunded         String   @default("0")
+  monthlyFunding    Float
+  status            String
+  cardanoAddress    String?
+  fundingLists      FundingListProject[]
+  createdAt         DateTime             @default(now())
+  updatedAt         DateTime             @updatedAt
+}
+
+model FundingListProject {
+  id                  String      @id @default(cuid())
+  fundingListId       String
+  projectId           String
+  distributionPercentage Float
+  fundingList         FundingList @relation(fields: [fundingListId], references: [id], onDelete: Cascade)
+  project             Project     @relation(fields: [projectId], references: [id], onDelete: Cascade)
+  createdAt           DateTime    @default(now())
+  updatedAt           DateTime    @updatedAt
+
+  @@unique([fundingListId, projectId])
+}
+
+model Transaction {
+  id            String      @id @default(cuid())
+  amount        Float
+  fundingListId String
+  fundingList   FundingList @relation(fields: [fundingListId], references: [id])
+  status        String
+  txHash        String?
+  createdAt     DateTime    @default(now())
+}
